@@ -2,16 +2,17 @@
 
 The RS485 library enables you to send and receive data using the RS-485 standard with any RS485 - UART communication module or Arduino&reg; RS485 Shields.
 
-This library supports the [MAX13487E](https://datasheets.maximintegrated.com/en/ds/MAX13487E-MAX13488E.pdf), [MAX3485](https://datasheets.maximintegrated.com/en/ds/MAX3483-MAX3491.pdf), [MAX3157](https://datasheets.maximintegrated.com/en/ds/MAX3157.pdf) and equivalent chipsets.
+This library supports the [MAX13487E](https://datasheets.maximintegrated.com/en/ds/MAX13487E-MAX13488E.pdf), [MAX3485](https://datasheets.maximintegrated.com/en/ds/MAX3483-MAX3491.pdf), [MAX3157](https://datasheets.maximintegrated.com/en/ds/MAX3157.pdf) and equivalent chips.
 
 ## ArduinoRS485 versus this RS485 Library
-This library is based on the [ArduinoRS485](https://github.com/arduino-libraries/ArduinoRS485), the ArduinoRS485 was originally developed for Arduino RS485 Shields and Arudino SA. MKR series of Arduino boards. It is therefoere doesn't works for MCUs like ESP8266 and ESP32 and likely other non-AVR MCUs. This version of RS485:
+This library is based on the [ArduinoRS485](https://github.com/arduino-libraries/ArduinoRS485), the ArduinoRS485 was originally developed for Arduino RS485 Shield and the official Arudino MKR series boards. It is therefoere doesn't works for MCUs like ESP8266 and ESP32 and probably some other non-AVR MCUs. This version of RS485 library:
 - Adds supports for ESP8266/ESP32.
 - Add a Class construction and several `begin()` overloaded function for providing the flexibility in supporting other MCUs and configuration requirements.
 - Made corrections on some minor mistakes in the ArduinoRS485.
 - Remove a couple of useless methods from the RS485 Class.
+- Add a detail API documentation (see below).
 
-I decided to setup this library instead of submitting the changes as a pull request to the original ArduinoRS485 because it seems that it take quite long (no release since Aug 2021) for Arduino SA. to roll out a minor release.
+I decided to create this version as a separate library instead of submitting the changes as a pull request to the original ArduinoRS485 because it seems that it take quite long (no release since Aug 2021) for Arduino SA. to even roll out a minor release.
 
 ## Library API
 
@@ -40,19 +41,22 @@ In addition to intializes the RS485 instance with specified speed, it allows to 
 
 #### void begin(unsigned long baudrate, int predelay, int postdelay)
 
-For those chips or modules that provide DE pin, the `predelay` value define the microsecond delay _after_ the DE pin is set from LOW to HIGH prior data transmission begin. The `postdelay` value refer to the delay in microseconds _before_ the DE pin is reset to LOW at the end of transmission.
+For those chips or modules with DE pin, the `predelay` value define the microsecond delay _after_ the DE pin is set from LOW to HIGH prior data transmission begin. The `postdelay` value refer to the delay in microseconds _before_ the DE pin is reset to LOW at the end of transmission.
 
-By default, both the `predelay` and `postdelay` is set to a constant defined by `RS485_DEFAULT_PRE_DELAY` and `RS485_DEFAULT_POST_DELAY`, both are set to 50 microseconds.
+By default, both the `predelay` and `postdelay` is set to a constant defined by `RS485_DEFAULT_PRE_DELAY` and `RS485_DEFAULT_POST_DELAY`, both are defined as 50 microseconds.
 
 
 #### void begin(unsigned long baudrate, RS485_SER_CONFIG_T config, int predelay, int postdelay)
 
-All `begin()` overloaded functions call this function one way or another, for example, `begin(baud_rate)` will be calling this function with the default paramters as `begin(baud_rate, SERIAL_8N1, RS485_DEFAULT_PRE_DELAY, RS485_DEFAULT_POST_DELAY )`.
+All `begin()` overloaded functions call this function one way or another, for example, `begin(baud_rate)` will be calling this function with the default paramters as:
+```
+begin(baud_rate, SERIAL_8N1, RS485_DEFAULT_PRE_DELAY, RS485_DEFAULT_POST_DELAY );
+```
 
 
 #### void end()
 
-Disables RS485 communication. For those chips/modules with DE and RE pins, both pins will be set to `LOW` and as `INPUT` (i.e. tri-state to allows other RS845 devices in the bus to be able to communicate).
+Terminates RS485 communication. For those chips/modules with DE and RE pins, both pins will be set to `LOW` and as `INPUT` (i.e. tri-state to allows other RS845 devices in the bus to be able to communicate).
 
 
 #### int available()
@@ -85,19 +89,19 @@ Writes data byte to the RS485 port. All the `write()` are inheritated from Ardui
 
 #### void beginTransmission()
 
-Signify the begin of a data transmission. The DE pin will be set to `HIGH` with the appropriate delay according to the `predelay` value (see `void begin(unsigned long baudrate, int predelay, int postdelay)`).
+Signifies the begin of a data transmission. The DE pin will be set to `HIGH` with the appropriate delay according to the `predelay` value.
 
 
 #### void endTransmission()
 
-Signify the end of a data transmission session. The DE pin will be reset to `LOW` after a `postdelay` in microseconds.
+Signifies the end of a data transmission session. The DE pin will be reset to `LOW` after a `postdelay` in microseconds.
 
 
 #### void sendBreak(unsigned int duration)
 
-This function will end the eixsting RS485 communication (after flushing out of the data), it then genearate a BREAk condition by pulling down the `txPin` for a few milliseconds based on the `duration` value, it then re-establish an RS485 communication by calling the `begin(baud_rate, config)`.
+This function will terminate the eixsting RS485 communication (after flushing out of the data), it then genearate a BREAK condition by pulling down the `txPin` for a few milliseconds based on the `duration` value, it then re-establish an RS485 communication by calling the `begin(baud_rate, config)` using previous baud rate and configuration settings.
 
 
 #### void sendBreakMicroseconds(unsigned int duration)
 
-This function does the same as `sendBreak()` function, except the `duration` is in microseconds instead of milliseconds.
+This function does the same as `sendBreak()` function, except the `duration` is in _microseconds_ instead of milliseconds.
