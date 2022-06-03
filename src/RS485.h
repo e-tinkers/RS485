@@ -30,16 +30,6 @@
 
 #include <Arduino.h>
 
-// #ifndef SERIAL_PORT_HARDWARE
-// #define SERIAL_PORT_HARDWARE Serial
-// #endif
-
-// #ifdef PIN_SERIAL1_TX
-// #define RS485_DEFAULT_TX_PIN PIN_SERIAL1_TX
-// #else
-// #define RS485_DEFAULT_TX_PIN 1
-// #endif
-
 #ifdef __AVR__
 #define RS485_DEFAULT_DE_PIN 2
 #define RS485_DEFAULT_RE_PIN NOT_A_PIN
@@ -77,12 +67,9 @@ class RS485 : public Stream {
     virtual void flush();
     virtual size_t write(uint8_t b);
     using Print::write; // pull in write(str) and write(buf, size) from Print
-    virtual operator bool();
 
     void beginTransmission();
     void endTransmission();
-
-    void setDelays(int predelay, int postdelay);
 
   private:
     HardwareSerial* _serial;

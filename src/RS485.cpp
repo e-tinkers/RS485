@@ -55,10 +55,8 @@ void RS485::begin(unsigned long baudrate, RS485_SER_CONFIG_T config, int predela
 {
   _baudrate = baudrate;
   _config = config;
-
-  // Set only if not already initialized with ::setDelays
-  _predelay = _predelay == 0 ? predelay : _predelay;
-  _postdelay = _postdelay == 0 ? postdelay : _postdelay;
+  _predelay = predelay;
+  _postdelay = postdelay;
 
   if (_dePin > -1) {
     pinMode(_dePin, OUTPUT);
@@ -161,17 +159,4 @@ void RS485::sendBreakMicroseconds(unsigned int duration)
   digitalWrite(_txPin, LOW);
   delayMicroseconds(duration);
   _serial->begin(_baudrate, _config);
-}
-
-void RS485::setPins(int txPin, int dePin, int rePin)
-{
-  _txPin = txPin;
-  _dePin = dePin;
-  _rePin = rePin;
-}
-
-void RS485::setDelays(int predelay, int postdelay)
-{
-  _predelay = predelay;
-  _postdelay = postdelay;
 }
