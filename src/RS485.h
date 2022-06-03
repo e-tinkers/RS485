@@ -54,7 +54,7 @@
 
 class RS485 : public Stream {
   public:
-    RS485(HardwareSerial& hwSerial, int txPin, int dePin, int rePin);
+    RS485(HardwareSerial& hwSerial, int txPin, int rxPin, int dePin, int rePin);
 
     virtual void begin(unsigned long baudrate);
     virtual void begin(unsigned long baudrate, RS485_SER_CONFIG_T config);
@@ -74,6 +74,7 @@ class RS485 : public Stream {
   private:
     HardwareSerial* _serial;
     int _txPin;
+    int _rxPin;
     int _dePin;
     int _rePin;
     int _predelay = RS485_DEFAULT_PRE_DELAY;

@@ -27,9 +27,10 @@
 
 #include "RS485.h"
 
-RS485::RS485(HardwareSerial& hwSerial, int txPin, int dePin, int rePin) :
+RS485::RS485(HardwareSerial& hwSerial, int txPin, int rxPin, int dePin, int rePin) :
   _serial(&hwSerial),
   _txPin(txPin),
+  _rxPin(rxPin),
   _dePin(dePin),
   _rePin(rePin),
   _transmisionBegun(false)
