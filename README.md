@@ -24,10 +24,6 @@ For example, here is how to create an instance for using Serial2 of an ESP32:
 ```
 RS485 rs485(Serial2, 16, 17, NOT_A_PIN, NOT_A_PIN);
 ```
-If the DE pin and RE pin are wired together, only one pin need to be defined as:
-```
-RS485 rs485(Serial2, 16, 17, 18, NOT_A_PIN);
-```
 
 
 #### void begin(unsigned long baudrate)
@@ -90,6 +86,11 @@ Writes data byte to the RS485 port. All the `write()` are inheritated from Ardui
 #### void beginTransmission()
 
 Signifies the begin of a data transmission. The DE pin will be set to `HIGH` with the appropriate delay according to the `predelay` value.
+
+
+#### void receiveMode()
+
+This function explicitly set the RE pin to `LOW` for enabling the receive mode.
 
 
 #### void endTransmission()

@@ -21,15 +21,17 @@
 
 int counter = 0;
 
+RS485 rs485(Serial2, 16, 17, NOT_A_PIN, NOT_A_PIN);
+
 void setup() {
-  RS485.begin(9600);
+  rs485.begin(9600);
 }
 
 void loop() {
-  RS485.beginTransmission();
-  RS485.print("hello ");
-  RS485.println(counter);
-  RS485.endTransmission();
+  rs485.beginTransmission();
+  rs485.print("hello ");
+  rs485.println(counter);
+  rs485.endTransmission();
 
   counter++;
 

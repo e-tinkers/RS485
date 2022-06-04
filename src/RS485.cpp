@@ -59,12 +59,9 @@ void RS485::begin(unsigned long baudrate, RS485_SER_CONFIG_T config, int predela
   _predelay = predelay;
   _postdelay = postdelay;
 
-  if (_dePin > -1) {
+  if (_dePin != NOT_A_PIN || _rePin != NOT_A_PIN) {
     pinMode(_dePin, OUTPUT);
     digitalWrite(_dePin, LOW);
-  }
-
-  if (_rePin > -1) {
     pinMode(_rePin, OUTPUT);
     digitalWrite(_rePin, HIGH);
   }
@@ -79,12 +76,12 @@ void RS485::end()
 {
   _serial->end();
 
-  if (_rePin > -1) {
+  if (_rePin != NOT_A_PIN) {
     digitalWrite(_rePin, LOW);
     pinMode(_dePin, INPUT);
   }
 
-  if (_dePin > -1) {
+  if (_dePin != NOT_A_PIN) {
     digitalWrite(_dePin, LOW);
     pinMode(_rePin, INPUT);
   }
@@ -122,7 +119,7 @@ size_t RS485::write(uint8_t b)
 
 void RS485::beginTransmission()
 {
-  if (_dePin > -1) {
+  if (_dePin != NOT_A_PIN) {
     digitalWrite(_dePin, HIGH);
     if (_predelay) delayMicroseconds(_predelay);
   }
@@ -134,12 +131,19 @@ void RS485::endTransmission()
 {
   _serial->flush();
 
-  if (_dePin > -1) {
+  if (_dePin != NOT_A_PIN) {
     if (_postdelay) delayMicroseconds(_postdelay);
     digitalWrite(_dePin, LOW);
   }
 
   _transmisionBegun = false;
+}
+
+void RS485::receiveMode()
+{
+  if (_rePin != NOT_A_PIN) {
+    digitalWrite(_rePin, LOW);
+  }
 }
 
 void RS485::sendBreak(unsigned int duration)

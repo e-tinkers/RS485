@@ -70,6 +70,7 @@ class RS485 : public Stream {
 
     void beginTransmission();
     void endTransmission();
+    void receiveMode();
     void sendBreak(unsigned int duration);
     void sendBreakMicroseconds(unsigned int duration);
 

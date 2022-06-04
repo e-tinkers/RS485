@@ -19,19 +19,18 @@
 
 #include <ArduinoRS485.h>
 
+RS485 rs485(Serial2, 16, 17, NOT_A_PIN, NOT_A_PIN);
+
 void setup() {
   Serial.begin(9600);
   while (!Serial);
 
-  RS485.begin(9600);
-
-  // enable reception, can be disabled with: RS485.noReceive();
-  RS485.receive();
+  rs485.begin(9600);
+  rs485.receiveMode();
 }
 
 void loop() {
-  if (RS485.available()) {
-    Serial.write(RS485.read());
+  if (rs485.available()) {
+    Serial.write(rs485.read());
   }
 }
-
