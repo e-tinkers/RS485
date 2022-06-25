@@ -73,6 +73,7 @@ class RS485 : public Stream {
     void receiveMode();
     void sendBreak(unsigned int duration);
     void sendBreakMicroseconds(unsigned int duration);
+    unsigned long getBaudrate();
 
   private:
     HardwareSerial* _serial;

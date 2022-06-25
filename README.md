@@ -106,3 +106,7 @@ This function will terminate the eixsting RS485 communication (after flushing ou
 #### void sendBreakMicroseconds(unsigned int duration)
 
 This function does the same as `sendBreak()` function, except the `duration` is in _microseconds_ instead of milliseconds.
+
+#### unsigned long getBaudrate()
+
+Return the baudrate used by the RS485 connection. The application such as Modbus define its frame delay based on the baudrate used for the communication.

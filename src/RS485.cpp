@@ -165,3 +165,7 @@ void RS485::sendBreakMicroseconds(unsigned int duration)
   delayMicroseconds(duration);
   _serial->begin(_baudrate, _config);
 }
+
+unsigned long RS485::getBaudrate() {
+    return _baudrate;
+}
