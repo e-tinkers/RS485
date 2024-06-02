@@ -19,7 +19,8 @@ I decided to create this version as a separate library instead of submitting the
 #### RS485(HardwareSerial& hwSerial, int txPin, int rxPin, int dePin, int rePin)
 
 Create an instance of RS485 Class, currently only HadwareSerial is supported.
-For those chips/modules that do not have the DE(Driver Enable) and RE(Receiver Enable) pins, you can pass in `NOT_A_PIn` as the paramters for those pins.
+
+For those chips/modules that do not have the DE(Driver Enable) and RE(Receiver Enable) pins, you can pass in `NOT_A_PIN` as the paramters for those pins.
 !["module without RE and DE pins](https://github.com/e-tinkers/RS485/blob/master/images/module_without_RE_DE_pins.jpg)
 
 For example, here is how to create an instance for using Serial2 of an ESP32:
@@ -32,13 +33,13 @@ For the module that only have an Enable pin like this one:
 ```cpp
 #define DERE_PIN 5  // any GPIO pin
 
-RS485 rs485(Serial2, RXD, TXD, DERE_PIN);
+RS485 rs485(Serial2, RXD, TXD, DERE_PIN, DERE_PIN);
 ```
 
-FOr the module that has both RE and DE pins
+For the module that has both RE and DE pins
 !["Module with both RE and DE pin](https://github.com/e-tinkers/RS485/blob/master/images/module_with_RE_DE_pins.jpg)
 ```cpp
-#define DE_pin 5  // any GPIO pin
+#define DE_PIN 5  // any GPIO pin
 #define RX_PIN 4  // any GPIO pin
 
 RS485 rs485(Serial2, RXD, TXD, DE_PIN, RE_PIN);
