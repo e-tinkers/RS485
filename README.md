@@ -25,7 +25,10 @@ For those chips/modules that do not have the DE(Driver Enable) and RE(Receiver E
 
 For example, here is how to create an instance for using Serial2 of an ESP32:
 ```cpp
-RS485 rs485(Serial2, 16, 17, NOT_A_PIN, NOT_A_PIN);
+#define RXD 16
+#define TXD 17
+
+RS485 rs485(Serial2, RXD, TXD, NOT_A_PIN, NOT_A_PIN);
 ```
 
 For the module that only have an Enable pin like this one:
