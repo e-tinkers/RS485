@@ -18,13 +18,31 @@ I decided to create this version as a separate library instead of submitting the
 
 #### RS485(HardwareSerial& hwSerial, int txPin, int rxPin, int dePin, int rePin)
 
-Create an instance of RS485 Class, currently only HadwareSerial is supported. For those chips/modules that do not have the DE(Driver Enable) and RE(Receiver Enable) pins, you can pass in `NOT_A_PIn` as the paramters for those pins.
+Create an instance of RS485 Class, currently only HadwareSerial is supported.
+For those chips/modules that do not have the DE(Driver Enable) and RE(Receiver Enable) pins, you can pass in `NOT_A_PIn` as the paramters for those pins.
+!["module without RE and DE pins](https://github.com/e-tinkers/RS485/blob/master/images/module_without_RE_DE_pins.jpg)
 
 For example, here is how to create an instance for using Serial2 of an ESP32:
-```
+```cpp
 RS485 rs485(Serial2, 16, 17, NOT_A_PIN, NOT_A_PIN);
 ```
 
+For the module that only have an Enable pin like this one:
+!["Module with only EN pin"](https://github.com/e-tinkers/RS485/blob/master/images/module_with_only_en_pin.png)
+```cpp
+#define DERE_PIN 5  // any GPIO pin
+
+RS485 rs485(Serial2, RXD, TXD, DERE_PIN);
+```
+
+FOr the module that has both RE and DE pins
+!["Module with both RE and DE pin](https://github.com/e-tinkers/RS485/blob/master/images/module_with_RE_DE_pins.jpg)
+```cpp
+#define DE_pin 5  // any GPIO pin
+#define RX_PIN 4  // any GPIO pin
+
+RS485 rs485(Serial2, RXD, TXD, DE_PIN, RE_PIN);
+```
 
 #### void begin(unsigned long baudrate)
 
@@ -45,7 +63,7 @@ By default, both the `predelay` and `postdelay` is set to a constant defined by 
 #### void begin(unsigned long baudrate, RS485_SER_CONFIG_T config, int predelay, int postdelay)
 
 All `begin()` overloaded functions call this function one way or another, for example, `begin(baud_rate)` will be calling this function with the default paramters as:
-```
+```cpp
 begin(baud_rate, SERIAL_8N1, RS485_DEFAULT_PRE_DELAY, RS485_DEFAULT_POST_DELAY );
 ```
 
